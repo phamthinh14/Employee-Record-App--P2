@@ -19,6 +19,7 @@ public class Employee {
     @Id
     //@GeneratedValue() provides for the specification of generation strategies for the values of primary keys.
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "employee_id")
     private long id;
 
     //@Column allows us to specify a name for the column of this table in the database.

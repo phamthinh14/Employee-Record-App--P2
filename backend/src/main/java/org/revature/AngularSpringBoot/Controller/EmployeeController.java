@@ -29,7 +29,7 @@ public class EmployeeController {
         return employeeRepository.findAll();
     }
     
-    //@PostMapping maps HTTP POST requests onto specific handler methods. Sepcifically acts as a shortcut for @RequestMapping(method=RequestMethod.POST)
+    //@PostMapping maps HTTP POST requests onto specific handler methods. Specifically acts as a shortcut for @RequestMapping(method=RequestMethod.POST)
     @PostMapping("/employees")
     public Employee postArtist(@RequestBody Employee employee) {
         return employeeRepository.save(employee);
