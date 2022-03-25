@@ -23,13 +23,13 @@ public class Employee {
     private long id;
 
     //@Column allows us to specify a name for the column of this table in the database.
-    @Column(name = "first_name")
+    //@Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
+    //@Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email_id")
+    //@Column(name = "email_id")
     private String emailId;
 
 
