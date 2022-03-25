@@ -13,6 +13,20 @@ export class EmployeeListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+      this.employees = [{
+        "id": 1,
+        "firstName": "Ron",
+        "lastName": "Lem",
+        "emailId": "ron@mail.com"
+      },
+      {
+        "id": 2,
+        "firstName": "Jon",
+        "lastName": "Kem",
+        "emailId": "jon@mail.com"
+      }];
+
+
   }
 
 }
