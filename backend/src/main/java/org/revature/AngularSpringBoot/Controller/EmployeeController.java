@@ -2,13 +2,16 @@ package org.revature.AngularSpringBoot.Controller;
 
 import java.util.List;
 
+import org.revature.AngularSpringBoot.Exception.ResourceNotFoundException;
 import org.revature.AngularSpringBoot.Model.Employee;
 import org.revature.AngularSpringBoot.Repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,4 +55,20 @@ public class EmployeeController {
         javaMailSender.send(message);
         return employeeRepository.save(employee);
     }
+
+
+    //Method to delete employee by the Id. Path Variable {id} is passed as the parameter of the method. 
+    @GetMapping("/employees/{id}")
+    //Using ResponseEntity class with Employee passed as a generic because we need to return an Http response.
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+        //Employee object is made using employeeRepo class and it's findById method. Since FindById returns Optional <Employee> we use 
+        //orElseThrow() method to throw an exception if the record isn't found in the database. orElseThrow() uses functional interfaces so we must pass
+        // a lambda function as the parameter to it with which we use a ResourceNotFoundExceptiont to display an error message when the exception is thrown.
+        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee does not exist with id : " + id));
+
+        return ResponseEntity.ok(employee);
+
+    }
+
+
 }
