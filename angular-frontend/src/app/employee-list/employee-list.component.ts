@@ -26,6 +26,13 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
+  //Routes are defined in our app-routing module. 
+
+  //Event handler for employeeDetails, is called when the View button is clicked and calls the employeeDetails method from employeeService.
+  employeeDetails(id: number){
+    this.router.navigate(['employee-details', id]);
+  }
+
   updateEmployee(id: number){
     this.router.navigate(['update-employee', id]);
   }
@@ -36,6 +43,9 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.deleteEmployee(id).subscribe( data => {
       console.log(data);
       this.getEmployees();
-    })
+    });
   }
+
+
+
 }
