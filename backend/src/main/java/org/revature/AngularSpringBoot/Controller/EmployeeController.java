@@ -57,7 +57,7 @@ public class EmployeeController {
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
         //Employee object is made using employeeRepo class and it's findById method. Since FindById returns Optional <Employee> we use 
         //orElseThrow() method to throw an exception if the record isn't found in the database. orElseThrow() uses functional interfaces so we must pass
-        // a lambda function as the parameter to it with which we use a ResourceNotFoundExceptiont to display an error message when the exception is thrown.
+        // a lambda function as the parameter to it with which we use a ResourceNotFoundException to display an error message when the exception is thrown.
         Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee does not exist with id : " + id));
 
         return ResponseEntity.ok(employee);
