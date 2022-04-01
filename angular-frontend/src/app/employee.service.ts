@@ -28,4 +28,9 @@ export class EmployeeService {
     return this.httpClient.get<Employee>(`${this.baseUrl}/${id}`);
 
   }
+
+  //Method makes call to delete employee by Id from the database.
+  deleteEmployee(id: number): Observable<Object>{
+    return this.httpClient.delete(`${this.baseUrl}/${id}`);
+  }
 }
