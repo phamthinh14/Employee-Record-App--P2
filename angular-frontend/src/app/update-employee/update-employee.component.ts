@@ -8,7 +8,7 @@ import { Employee } from '../employee';
 })
 export class UpdateEmployeeComponent implements OnInit {
 
-  employee Employee = new Employee();
+  employee: Employee = new Employee();
   constructor() { }
 
   ngOnInit(): void {
