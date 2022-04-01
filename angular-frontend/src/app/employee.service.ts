@@ -18,4 +18,14 @@ export class EmployeeService {
   createEmployee(employee: Employee): Observable<Object> {
     return this.httpClient.post(`${this.baseUrl}`, employee);
   }
+
+
+  //Observables provide support for passing messages between parts of our application. Frequently used in Angular and are a technique for event handling,
+  //asynchronous programming, and handling multiple values.
+
+  //This method returns an Employee object so we pass through an Employee model into Observable class
+  getEmployeeById(id: number): Observable<Employee>{
+    return this.httpClient.get<Employee>(`${this.baseUrl}/${id}`);
+
+  }
 }
