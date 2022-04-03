@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
 
@@ -17,7 +17,8 @@ export class UpdateEmployeeComponent implements OnInit {
   //route associated with a component that is loaded in an outlet.
   
   constructor(private employeeService: EmployeeService, 
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
   //Using snapshot(gives current snapshot of route) and params(gives an observable of the matrix parameters scoped to this route) 
@@ -28,6 +29,17 @@ export class UpdateEmployeeComponent implements OnInit {
     this.employeeService.getEmployeeById(this.id).subscribe(data => {
       this.employee = data;
     }, error => console.log(error));
+  }
+
+  onSubmit(){
+    this.employeeService.updateEmployee(this.id, this.employee).subscribe( data =>{
+      console.log(data);
+      this.goToEmployeeList();
+    });
+  }
+
+  goToEmployeeList() {
+    this.router.navigate(['/employees']);
   }
 
 }
