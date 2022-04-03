@@ -60,7 +60,7 @@ public class EmployeeController {
         //Employee object is made using employeeRepo class and it's findById method. Since FindById returns Optional <Employee> we use 
         //orElseThrow() method to throw an exception if the record isn't found in the database. orElseThrow() uses functional interfaces so we must pass
         // a lambda function as the parameter to it with which we use a ResourceNotFoundException to display an error message when the exception is thrown.
-        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee does not exist with id : " + id));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee does not exist with id : " + id));
 
         return ResponseEntity.ok(employee);
 
@@ -68,27 +68,41 @@ public class EmployeeController {
 
     @PutMapping("/employees/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee newEmployeeInfo) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee does not exist with id : " + id));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee does not exist with id : " + id));
+        SimpleMailMessage message = new SimpleMailMessage();
+        String content = "Your information is updated.\n" +
+                "Your OLD first and last name is: " + employee.getFirstName() + " " + employee.getLastName() + "\n" +
+                "Your OLD email is " + employee.getEmailId() + "\n\n" +
+                "Your UPDATED first and last name is: " + newEmployeeInfo.getFirstName() + " " + newEmployeeInfo.getLastName() + "\n" +
+                "Your UPDATED email is " + newEmployeeInfo.getEmailId() + "\n\n" +
+                "Best Regards,\nRevature.";
+        message.setFrom("revature.donotreply@gmail.com");
+        message.setTo(newEmployeeInfo.getEmailId());
+        message.setSubject("Updated Information");
+
         employee.setFirstName(newEmployeeInfo.getFirstName());
         employee.setLastName(newEmployeeInfo.getLastName());
         employee.setEmailId(newEmployeeInfo.getEmailId());
+
         Employee updatedEmployee = employeeRepository.save(employee);
+        message.setText(content);
+        javaMailSender.send(message);
         return ResponseEntity.ok(updatedEmployee);
     }
 
     //Method to delete employee by the Id. 
     @DeleteMapping("/employees/{id}")
     //We are going to return a map as a response for a deleted employee and status message.
-    public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id){
-        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee does not exist with id : " + id));
+    public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee does not exist with id : " + id));
 
         employeeRepository.delete(employee);
         //Making a HashMap Map to store a string and boolean value as a response. Will respond with "deleted" and a boolean TRUE to let the client know 
         //the deletion was succesful.
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
-        
+
         return ResponseEntity.ok(response);
     }
-    
+
 }
