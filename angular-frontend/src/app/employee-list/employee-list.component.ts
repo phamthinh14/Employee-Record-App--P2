@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
 
@@ -29,4 +30,12 @@ export class EmployeeListComponent implements OnInit {
     this.router.navigate(['update-employee', id]);
   }
 
+  //Event handler for deleteEmployee, is called when the Delete button is pressed and calles the deleteEmployee method from employeeService
+  //to delete the employee from the database.
+  deleteEmployee(id: number){
+    this.employeeService.deleteEmployee(id).subscribe( data => {
+      console.log(data);
+      this.getEmployees();
+    })
+  }
 }
