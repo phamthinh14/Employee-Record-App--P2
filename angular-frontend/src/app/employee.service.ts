@@ -24,7 +24,7 @@ export class EmployeeService {
   //asynchronous programming, and handling multiple values.
 
   //This method returns an Employee object so we pass through an Employee model into Observable class
-  getEmployeeById(id: number): Observable<Employee>{
+  getEmployeeById(id: number): Observable<Employee> {
     return this.httpClient.get<Employee>(`${this.baseUrl}/${id}`);
 
   }
@@ -35,7 +35,7 @@ export class EmployeeService {
   }
 
   //Method makes call to delete employee by Id from the database.
-  deleteEmployee(id: number): Observable<Object>{
+  deleteEmployee(id: number): Observable<Object> {
     return this.httpClient.delete(`${this.baseUrl}/${id}`);
 
   }
