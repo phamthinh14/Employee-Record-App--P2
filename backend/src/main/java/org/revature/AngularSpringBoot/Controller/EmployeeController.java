@@ -1,6 +1,8 @@
 package org.revature.AngularSpringBoot.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.revature.AngularSpringBoot.Exception.ResourceNotFoundException;
 import org.revature.AngularSpringBoot.Model.Employee;
@@ -51,7 +53,7 @@ public class EmployeeController {
     }
 
 
-    //Method to delete employee by the Id. Path Variable {id} is passed as the parameter of the method. 
+    //Method to get employee by the Id. Path Variable {id} is passed as the parameter of the method. 
     @GetMapping("/employees/{id}")
     //Using ResponseEntity class with Employee passed as a generic because we need to return an Http response.
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
@@ -73,4 +75,20 @@ public class EmployeeController {
         Employee updatedEmployee = employeeRepository.save(employee);
         return ResponseEntity.ok(updatedEmployee);
     }
+
+    //Method to delete employee by the Id. 
+    @DeleteMapping("/employees/{id}")
+    //We are going to return a map as a response for a deleted employee and status message.
+    public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id){
+        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee does not exist with id : " + id));
+
+        employeeRepository.delete(employee);
+        //Making a HashMap Map to store a string and boolean value as a response. Will respond with "deleted" and a boolean TRUE to let the client know 
+        //the deletion was succesful.
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        
+        return ResponseEntity.ok(response);
+    }
+    
 }
