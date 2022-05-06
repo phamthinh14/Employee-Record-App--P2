@@ -4,6 +4,8 @@ import org.revature.AngularSpringBoot.Model.Employee;
 import org.revature.AngularSpringBoot.Repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmployeeServiceImp implements EmployeeService {
     private final EmployeeRepository employeeRepository;
@@ -21,23 +23,22 @@ public class EmployeeServiceImp implements EmployeeService {
         return employeeRepository.save(employee);
     }
 
-//    /**
-//     * @return
-//     */
-//    @Override
-//    public List<Employee> fetchEmployeeList() {
-//        return null;
-//    }
-//
-//    /**
-//     * @param employeeId
-//     * @return
-//     * @throws ResourceNotFoundException
-//     */
-//    @Override
-//    public Employee fetchEmployeeById(Long employeeId) throws ResourceNotFoundException {
-//        return null;
-//    }
+    /**
+     * @return
+     */
+    @Override
+    public List<Employee> fetchEmployeeList() {
+        return employeeRepository.findAll();
+    }
+
+    /**
+     * @param employeeId
+     * @return
+     */
+    @Override
+    public Employee fetchEmployeeById(Long employeeId) {
+        return employeeRepository.findById(employeeId).get();
+    }
 //
 //    /**
 //     * @param employeeId

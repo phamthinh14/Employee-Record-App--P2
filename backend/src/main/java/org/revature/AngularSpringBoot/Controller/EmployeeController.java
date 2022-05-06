@@ -1,10 +1,14 @@
 package org.revature.AngularSpringBoot.Controller;
 
+import org.revature.AngularSpringBoot.Exception.ResourceNotFoundException;
 import org.revature.AngularSpringBoot.Model.Employee;
 import org.revature.AngularSpringBoot.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //@RestController is a convenience annotation that is itself annotated with @Controller and @ResponseBody. Applied to a
 //class to mark it as a request handler. Used to created RESTful web services using Spring MVC.
@@ -16,19 +20,19 @@ import org.springframework.web.bind.annotation.*;
 //Can be applied to the controller class as well as methods. 
 @RequestMapping("/api/v1/")
 public class EmployeeController {
+    //    //@Autowired is used for dependency injections. In Spring Boot all loaded beans are eligible for auto wiring to another bean.
     @Autowired
     private EmployeeService employeeService;
-//    //@Autowired is used for dependency injections. In Spring Boot all loaded beans are eligible for auto wiring to another bean.
-//    @Autowired
-//    private EmployeeRepository employeeRepository;
-////    @Autowired
-////    private JavaMailSender javaMailSender;
+
+
+    //    @Autowired
+//    private JavaMailSender javaMailSender;
 //
-//    //@GetMapping is used for mapping HTTP GET requests onto specific handler methods. Specifically acts as a shortcut for @RequestMapping(method = RequestMethod.GET)
-//    @GetMapping("/employees")
-//    public List<Employee> getAllEmployees() {
-//        return employeeRepository.findAll();
-//    }
+    //@GetMapping is used for mapping HTTP GET requests onto specific handler methods. Specifically acts as a shortcut for @RequestMapping(method = RequestMethod.GET)
+    @GetMapping("/employees")
+    public List<Employee> getAllEmployees() {
+        return employeeService.fetchEmployeeList();
+    }
 
     //@PostMapping maps HTTP POST requests onto specific handler methods. Specifically acts as a shortcut for @RequestMapping(method=RequestMethod.POST)
     @PostMapping("/employees")
@@ -48,19 +52,16 @@ public class EmployeeController {
         return employeeService.saveEmployee(employee);
     }
 
-//
-//    //Method to get employee by the Id. Path Variable {id} is passed as the parameter of the method.
-//    @GetMapping("/employees/{id}")
-//    //Using ResponseEntity class with Employee passed as a generic because we need to return an Http response.
-//    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
-//        //Employee object is made using employeeRepo class and it's findById method. Since FindById returns Optional <Employee> we use
-//        //orElseThrow() method to throw an exception if the record isn't found in the database. orElseThrow() uses functional interfaces so we must pass
-//        // a lambda function as the parameter to it with which we use a ResourceNotFoundException to display an error message when the exception is thrown.
-//        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee does not exist with id : " + id));
-//
-//        return ResponseEntity.ok(employee);
-//
-//    }
+
+    //Method to get employee by the Id. Path Variable {id} is passed as the parameter of the method.
+    @GetMapping("/employees/{id}")
+    //Using ResponseEntity class with Employee passed as a generic because we need to return an Http response.
+    public Employee getEmployeeById(@PathVariable Long id) {
+        //Employee object is made using employeeRepo class and it's findById method. Since FindById returns Optional <Employee> we use
+        //orElseThrow() method to throw an exception if the record isn't found in the database. orElseThrow() uses functional interfaces so we must pass
+        // a lambda function as the parameter to it with which we use a ResourceNotFoundException to display an error message when the exception is thrown.
+        return employeeService.fetchEmployeeById(id);
+    }
 //
 //    @PutMapping("/employees/{id}")
 //    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee newEmployeeInfo) {
